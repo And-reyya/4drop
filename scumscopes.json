@@ -43,7 +43,7 @@
     "UMP-45": ["none"],
     "VHS 2": ["none"],
     "VHS 2 CT": ["Integrated"],
-    "SCAR -DMR": ["none"],
+    "SCAR- DMR": ["none"],
     "SCAR-L": ["SpektralIDR"],
     "MAC-10": ["none"],
     "Improvised Rifle": ["none"]
@@ -92,7 +92,7 @@
   "UMP-45": "none",
   "VHS 2": "ACOG, Improvised, M82, P-223, Vampyr, SpektralIDR",
   "VHS 2 CT": "none",
-  "SCAR -DMR": "ACOG, Improvised, M82, P-223, Vampyr, SpektralIDR",
+  "SCAR- DMR": "ACOG, Improvised, M82, P-223, Vampyr, SpektralIDR",
   "SCAR-L": "SpektralIDR",
   "MAC-10": "none",
   "Improvised Rifle": "ACOG (IL), Improvised (IL), M82 (IL), P-223 (IL), Vampyre (IL), V3 Holographic (IL), XPS Holographic (IL), SpektralIDR (IL)"
