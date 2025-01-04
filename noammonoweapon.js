@@ -52,14 +52,18 @@ document.addEventListener("DOMContentLoaded", function() {
                   // Ha van nestedMapFunction, akkor azt is kezeljük
                   if (nestedMapFunction) {
                     const nestedItems = nestedMapFunction(data, item);
-                    nestedDropdown.innerHTML = nestedItems.map(nestedItem => `<p>${nestedItem}</p>`).join("");
-                    nestedDropdown.style.display = nestedItems.length > 0 ? "block" : "none";
-                    nestedDropdown.querySelectorAll("p").forEach(nestedItem => {
-                      nestedItem.addEventListener("click", () => {
-                        searchInput.value = `${item.textContent} ${nestedItem.textContent}`;
-                        nestedDropdown.style.display = "none";
+                    if (nestedItems && nestedItems.length > 0) {
+                      nestedDropdown.innerHTML = nestedItems.map(nestedItem => `<p>${nestedItem}</p>`).join("");
+                      nestedDropdown.style.display = "block";
+                      nestedDropdown.querySelectorAll("p").forEach(nestedItem => {
+                        nestedItem.addEventListener("click", () => {
+                          searchInput.value = `${item.textContent} ${nestedItem.textContent}`;
+                          nestedDropdown.style.display = "none";
+                        });
                       });
-                    });
+                    } else {
+                      nestedDropdown.style.display = "none";
+                    }
                   } else {
                     nestedDropdown.style.display = "none";
                   }
@@ -80,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return selectedAmmoData ? selectedAmmoData.weapon : [];
     });
 
-  handleOptionClick("MAGAZINE", reversedrop, "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+  handleOptionClick("MAGAZINE", reversedrop, "https://raw.githubusercontent.com/And-reyyya/scumtools/main/reverse.json",
     data => Object.keys(data.reversemag), reversemagazine, (item, data) => item.textContent,
     reversemagazinetoweapon, (data, item) => {
       const selectedMagazineData = data.reversemag[item.textContent];
