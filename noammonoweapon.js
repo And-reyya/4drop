@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", function() {
               targetDropdown.querySelectorAll("p").forEach(item => {
                 item.addEventListener("click", () => {
                   searchInput.value = targetMapFunction(item, data);
-                  // Ha van nestedMapFunction, akkor azt is kezeljük
+                  // NestedMapFunction ellenőrzés
                   if (nestedMapFunction) {
                     const nestedItems = nestedMapFunction(data, item);
-                    if (nestedItems && nestedItems.length > 0) {
+                    if (Array.isArray(nestedItems) && nestedItems.length > 0) {
                       nestedDropdown.innerHTML = nestedItems.map(nestedItem => `<p>${nestedItem}</p>`).join("");
                       nestedDropdown.style.display = "block";
                       nestedDropdown.querySelectorAll("p").forEach(nestedItem => {
@@ -62,10 +62,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         });
                       });
                     } else {
-                      nestedDropdown.style.display = "none";
+                      nestedDropdown.style.display = "none"; // Ha nincs találat, rejtjük el
                     }
                   } else {
-                    nestedDropdown.style.display = "none";
+                    nestedDropdown.style.display = "none"; // Ha nincs nestedMapFunction, elrejtjük
                   }
                   targetDropdown.style.display = "none";
                 });
