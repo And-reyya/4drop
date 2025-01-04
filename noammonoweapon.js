@@ -51,8 +51,9 @@ document.addEventListener("DOMContentLoaded", function() {
                   searchInput.value = targetMapFunction(item, data);
                   // Ha nincs szükség nested dropdown-ra (pl. ammo, flashlight)
                   if (nestedDropdown) {
-                    nestedDropdown.innerHTML = nestedMapFunction(data, item).map(nestedItem => `<p>${nestedItem}</p>`).join("");
-                    nestedDropdown.style.display = "block";
+                    const nestedItems = nestedMapFunction ? nestedMapFunction(data, item) : [];
+                    nestedDropdown.innerHTML = nestedItems.map(nestedItem => `<p>${nestedItem}</p>`).join("");
+                    nestedDropdown.style.display = nestedItems.length > 0 ? "block" : "none";
                     nestedDropdown.querySelectorAll("p").forEach(nestedItem => {
                       nestedItem.addEventListener("click", () => {
                         searchInput.value = `${item.textContent} ${nestedItem.textContent}`;
