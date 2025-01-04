@@ -49,14 +49,19 @@ document.addEventListener("DOMContentLoaded", function() {
               targetDropdown.querySelectorAll("p").forEach(item => {
                 item.addEventListener("click", () => {
                   searchInput.value = targetMapFunction(item, data);
-                  nestedDropdown.innerHTML = nestedMapFunction(data, item).map(nestedItem => `<p>${nestedItem}</p>`).join("");
-                  nestedDropdown.style.display = "block";
-                  nestedDropdown.querySelectorAll("p").forEach(nestedItem => {
-                    nestedItem.addEventListener("click", () => {
-                      searchInput.value = `${item.textContent} ${nestedItem.textContent}`;
-                      nestedDropdown.style.display = "none";
+                  // Ha nincs szükség nested dropdown-ra (pl. ammo, flashlight)
+                  if (nestedDropdown) {
+                    nestedDropdown.innerHTML = nestedMapFunction(data, item).map(nestedItem => `<p>${nestedItem}</p>`).join("");
+                    nestedDropdown.style.display = "block";
+                    nestedDropdown.querySelectorAll("p").forEach(nestedItem => {
+                      nestedItem.addEventListener("click", () => {
+                        searchInput.value = `${item.textContent} ${nestedItem.textContent}`;
+                        nestedDropdown.style.display = "none";
+                      });
                     });
-                  });
+                  } else {
+                    nestedDropdown.style.display = "none";
+                  }
                   targetDropdown.style.display = "none";
                 });
               });
