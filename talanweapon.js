@@ -1,5 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     let e = document.getElementById("searchInput"),
+        t = document.querySelector(".triangle-icon"),
+        n = document.getElementById("reversedrop"),
         r = document.getElementById("reversebela"),
         o = document.getElementById("reversedalmadrop"),
         l = document.getElementById("reverseammotoweapon"),
@@ -11,173 +13,126 @@ document.addEventListener("DOMContentLoaded", function() {
         f = document.getElementById("reverseflashtoweapon"),
         b = document.getElementById("reversebayonetttoweapon");
 
-    fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
-        .then(e => e.json())
-        .then(t => {
-            let data = t.reversebela;
-            r.innerHTML = data.map(e => `<p>${e}</p>`).join("");
-            r.querySelectorAll("p").forEach(t => {
-                t.addEventListener("click", () => {
-                    e.value = t.textContent;
-                    r.style.display = "none";
-                    o.innerHTML = ["AMMO", "MAGAZINE", "RAIL", "SIGHT", "SCOPE", "SUPPRESSOR", "FLASHLIGHT", "BAYONETT"]
-                        .map(e => `<p>${e}</p>`).join("");
-                    o.style.display = "block";
-                    o.querySelectorAll("p").forEach(t => {
-                        if ("AMMO" === t.textContent) {
+    n.innerHTML = ["WEAPON", "AMMO", "MAGAZINE", "RAIL", "SIGHT", "SCOPE", "SUPPRESSOR", "BAYONETT", "RAIL", "FLASHLIGHT"]
+        .map(e => `<p>${e}</p>`)
+        .join("");
+
+    t.addEventListener("click", () => {
+        n.style.display = n.style.display === "block" ? "none" : "block";
+    });
+
+    n.querySelectorAll("p").forEach((t) => {
+        if (t.textContent === "WEAPON") {
+            t.addEventListener("click", () => {
+                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
+                    .then((e) => e.json())
+                    .then((t) => {
+                        let data = t.reversebela;
+                        r.innerHTML = data.map((e) => `<p>${e}</p>`).join("");
+                        r.style.display = "block";
+
+                        r.querySelectorAll("p").forEach((t) => {
                             t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reverseorsi.find(e => e.weapon.toLowerCase() === n.toLowerCase());
-                                        l.innerHTML = item.ammo.map(e => `<p>${e}</p>`).join("");
-                                        l.style.display = "block";
-                                        l.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                l.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
+                                e.value = t.textContent;
+                                r.style.display = "none";
+                                n.style.display = "none";
+
+                                o.innerHTML = ["AMMO", "MAGAZINE", "RAIL", "SIGHT", "SCOPE", "SUPPRESSOR", "FLASHLIGHT", "BAYONETT"]
+                                    .map((e) => `<p>${e}</p>`)
+                                    .join("");
+                                o.style.display = "block";
+
+                                o.querySelectorAll("p").forEach((t) => {
+                                    const fetchAndRender = (url, property, element, key) => {
+                                        o.style.display = "none";
+                                        fetch(url)
+                                            .then((e) => e.json())
+                                            .then((t) => {
+                                                let n = e.value.trim();
+                                                let item = t[property][n];
+                                                element.innerHTML = item
+                                                    ? item.map((e) => `<p>${e}</p>`).join("")
+                                                    : `No ${key} available.`;
+                                                element.style.display = "block";
+
+                                                element.querySelectorAll("p").forEach((t) => {
+                                                    t.addEventListener("click", () => {
+                                                        e.value = `${e.value}; ${t.textContent}`;
+                                                        element.style.display = "none";
+                                                    });
+                                                });
+                                            })
+                                            .catch((e) => console.error("Error loading JSON:", e));
+                                    };
+
+                                    const handlers = {
+                                        AMMO: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json",
+                                                "reverseorsi",
+                                                l,
+                                                "ammo"
+                                            ),
+                                        MAGAZINE: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json",
+                                                "reversemargit",
+                                                a,
+                                                "magazine"
+                                            ),
+                                        RAIL: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+                                                "reverserai",
+                                                s,
+                                                "rail"
+                                            ),
+                                        SIGHT: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+                                                "reversesig",
+                                                i,
+                                                "sight"
+                                            ),
+                                        SCOPE: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+                                                "reversesco",
+                                                c,
+                                                "scope"
+                                            ),
+                                        SUPPRESSOR: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+                                                "reversesup",
+                                                u,
+                                                "suppressor"
+                                            ),
+                                        FLASHLIGHT: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+                                                "reversefla",
+                                                f,
+                                                "flashlight"
+                                            ),
+                                        BAYONETT: () =>
+                                            fetchAndRender(
+                                                "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json",
+                                                "reversebay",
+                                                b,
+                                                "bayonett"
+                                            ),
+                                    };
+
+                                    if (handlers[t.textContent]) {
+                                        handlers[t.textContent]();
+                                    }
+                                });
                             });
-                        }
-                        if ("MAGAZINE" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reversemargit.find(e => e.weapon.toLowerCase() === n.toLowerCase());
-                                        a.innerHTML = `<p>${item.magazine} (${item.capacity})</p>`;
-                                        a.style.display = "block";
-                                        a.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                a.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                        if ("RAIL" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reverserai[n];
-                                        s.innerHTML = item.map(e => `<p>${e}</p>`).join("");
-                                        s.style.display = "block";
-                                        s.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                s.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                        if ("SIGHT" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reversesig[n];
-                                        i.innerHTML = item.map(e => `<p>${e}</p>`).join("");
-                                        i.style.display = "block";
-                                        i.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                i.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                        if ("SCOPE" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reversesco[n];
-                                        c.innerHTML = item.map(e => `<p>${e}</p>`).join("");
-                                        c.style.display = "block";
-                                        c.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                c.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                        if ("SUPPRESSOR" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reversesup[n];
-                                        u.innerHTML = item.map(e => `<p>${e}</p>`).join("");
-                                        u.style.display = "block";
-                                        u.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                u.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                        if ("FLASHLIGHT" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reversefla[n];
-                                        f.innerHTML = item ? item.split(', ').map(e => `<p>${e}</p>`).join("") : "No flashlights available.";
-                                        f.style.display = "block";
-                                        f.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                f.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                        if ("BAYONETT" === t.textContent) {
-                            t.addEventListener("click", () => {
-                                o.style.display = "none";
-                                fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")
-                                    .then(e => e.json())
-                                    .then(t => {
-                                        let n = e.value.trim();
-                                        let item = t.reversebay[n];
-                                        b.innerHTML = item.map(e => `<p>${e}</p>`).join("");
-                                        b.style.display = "block";
-                                        b.querySelectorAll("p").forEach(t => {
-                                            t.addEventListener("click", () => {
-                                                e.value = `${e.value}; ${t.textContent}`;
-                                                b.style.display = "none";
-                                            });
-                                        });
-                                    }).catch(e => console.error("Error loading JSON:", e));
-                            });
-                        }
-                    });
-                });
+                        });
+                    })
+                    .catch((e) => console.error("Error loading JSON:", e));
             });
-        }).catch(e => console.error("Error loading JSON:", e));
+        }
+    });
 });
