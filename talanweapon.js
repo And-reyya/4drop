@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     // Ellenőrizzük, hogy az item tömb-e
                                                     if (Array.isArray(item)) {
                                                         element.innerHTML = item.map((e) => `<p>${e}</p>`).join("");
+                                                    } else if (item) {
+                                                        element.innerHTML = `<p>${item}</p>`;
                                                     } else {
                                                         element.innerHTML = `No ${key} available.`;
                                                     }
