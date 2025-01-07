@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const searchInput = document.getElementById("searchInput"), 
+  const searchInput = document.getElementById("searchInput"),
         triangleIcon = document.querySelector(".triangle-icon"),
-        reversedrop = document.getElementById("reversedrop"),
-        pontdrop = document.getElementById("pontdrop"),
-        marikadrop = document.getElementById("marikadrop"),
-        beladrop = document.getElementById("beladrop");
+        reversedrop = document.getElementById("reversedrop");
 
   const options = ["WEAPON", "AMMO", "MAGAZINE", "SIGHT", "SCOPE", "SUPRESSOR", "BAYONETT", "RAIL", "FLASHLIGHT"];
   reversedrop.innerHTML = options.map(option => `<p>${option}</p>`).join("");
@@ -14,83 +11,74 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   reversedrop.querySelectorAll("p").forEach(option => {
-    if (option.textContent === "WEAPON") {
-      option.addEventListener("click", () => {
-        searchInput.value = "WEAPON";
-        fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/scumdata.json")
-          .then(response => response.json())
-          .then(data => {
-            const items = data.scumbela;
-            beladrop.innerHTML = items.map(item => `<p>${item}</p>`).join("");
-            beladrop.style.display = "block";
-          })
-          .catch(error => console.error("Hiba a JSON betöltésekor:", error));
-      });
-    }
-  });
-
-  pontdrop.addEventListener("click", function(event) {
-    if (event.target.tagName === "P") {
-      searchInput.value = event.target.textContent;
-      fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/scumdata.json")
-        .then(response => response.json())
-        .then(data => {
-          const ammo = event.target.textContent;
-          const ammoData = data.scumjancsi.find(item => item.ammo.toLowerCase() === ammo.toLowerCase().trim());
-          if (ammoData) {
-            marikadrop.innerHTML = '';
-            const weaponButton = document.createElement('button');
-            weaponButton.textContent = 'WEAPON';
-            weaponButton.addEventListener('click', () => showWeapons(ammo, data));
-            marikadrop.appendChild(weaponButton);
-
-            const magazineButton = document.createElement('button');
-            magazineButton.textContent = 'MAGAZINE';
-            magazineButton.addEventListener('click', () => showMagazine(ammo, data));
-            marikadrop.appendChild(magazineButton);
-            marikadrop.style.display = 'block';
-          }
-        })
-        .catch(error => console.error("Hiba a JSON betöltésekor:", error));
-    }
-  });
-
-  const clearDropdowns = () => {
-    [pontdrop, marikadrop, beladrop].forEach(dropdown => {
-      dropdown.innerHTML = '';
-      dropdown.style.display = 'none';
+    option.addEventListener("click", () => {
+      searchInput.value = option.textContent;
+      reversedrop.style.display = "none";
+      fetchDropdownData(option.textContent);
     });
-  };
+  });
 
-  const showWeapons = (ammo, data) => {
-    clearDropdowns();
-    const ammoData = data.scumjancsi.find(item => item.ammo.toLowerCase().includes(ammo.toLowerCase().trim()));
-    const weapons = ammoData ? ammoData.weapon : ["No weapons found"];
+  function fetchDropdownData(selectedOption) {
+    let jsonUrl = "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json";
+    if (selectedOption === "MAGAZINE") {
+      jsonUrl = "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json"; // Példa URL
+    }
+    fetch(jsonUrl)
+      .then(response => response.json())
+      .then(data => createDropdown(data, selectedOption))
+      .catch(error => console.error("Hiba a JSON betöltésekor:", error));
+  }
+
+  function createDropdown(data, selectedOption) {
+    const dropdownId = `reverse${selectedOption.toLowerCase()}`;
+    let dropdown = document.getElementById(dropdownId);
+    if (!dropdown) {
+      dropdown = document.createElement('div');
+      dropdown.id = dropdownId;
+      dropdown.classList.add('dropdown');
+      document.querySelector('.search-container').appendChild(dropdown);
+    }
+    dropdown.innerHTML = '';
+
+    let items;
+    if (selectedOption === "MAGAZINE") {
+      items = Object.keys(data.reversemag);
+    } else {
+      items = data[selectedOption.toLowerCase()] || [];
+    }
+
+    items.forEach(item => {
+      const option = document.createElement('p');
+      option.textContent = item;
+      option.addEventListener('click', () => {
+        searchInput.value = `${searchInput.value}; ${item}`;
+        dropdown.style.display = 'none';
+        if (selectedOption === "MAGAZINE") {
+          createDropdown2(data.reversemag[item].compatibleWeapons, item);
+        }
+      });
+      dropdown.appendChild(option);
+    });
+    dropdown.style.display = "block";
+  }
+
+  function createDropdown2(weapons, magazine) {
+    const dropdown2 = document.createElement('div');
+    dropdown2.id = 'reversemmagazine2';
+    dropdown2.classList.add('dropdown');
+    dropdown2.innerHTML = '';
+
     weapons.forEach(weapon => {
-      const option = document.createElement("p");
+      const option = document.createElement('p');
       option.textContent = weapon;
-      option.addEventListener("click", () => {
+      option.addEventListener('click', () => {
         searchInput.value = `${searchInput.value}; ${weapon}`;
-        clearDropdowns();
+        dropdown2.style.display = 'none';
       });
-      marikadrop.appendChild(option);
+      dropdown2.appendChild(option);
     });
-    marikadrop.style.display = "block";
-  };
 
-  const showMagazine = (ammo, data) => {
-    clearDropdowns();
-    const ammoData = data.scummonika.find(item => item.ammo.toLowerCase().includes(ammo.toLowerCase().trim()));
-    const magazines = ammoData ? ammoData.magazine : ["No magazines found"];
-    magazines.forEach(mag => {
-      const option = document.createElement("p");
-      option.textContent = mag;
-      option.addEventListener("click", () => {
-        searchInput.value = `${searchInput.value}; ${mag}`;
-        clearDropdowns();
-      });
-      marikadrop.appendChild(option);
-    });
-    marikadrop.style.display = "block";
-  };
+    document.querySelector('.search-container').appendChild(dropdown2);
+    dropdown2.style.display = "block";
+  }
 });
