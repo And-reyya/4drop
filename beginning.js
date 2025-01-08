@@ -4,17 +4,20 @@ document.addEventListener("DOMContentLoaded", function() {
         reversedrop = document.getElementById("reversedrop");
 
   const options = ["WEAPON", "AMMO", "MAGAZINE", "SIGHT", "SCOPE", "SUPPRESSOR", "BAYONETT", "RAIL", "FLASHLIGHT"];
-  reversedrop.innerHTML = options.map(option => `<p>${option}</p>`).join("");
+  reversedrop.innerHTML = options.map(option => {
+    if (option === "MAGAZINE") {
+      return `<p class="disabled">${option}</p>`;
+    }
+    return `<p>${option}</p>`;
+  }).join("");
 
   triangleIcon.addEventListener("click", () => {
     reversedrop.style.display = (reversedrop.style.display === "block") ? "none" : "block";
   });
 
-  reversedrop.querySelectorAll("p").forEach(option => {
+  reversedrop.querySelectorAll("p:not(.disabled)").forEach(option => {
     option.addEventListener("click", () => {
-      if (option.textContent !== "MAGAZINE") {
-        searchInput.value = option.textContent;
-      }
+      searchInput.value = option.textContent;
       reversedrop.style.display = "none";
       fetchDropdownData(option.textContent);
     });
@@ -84,3 +87,11 @@ document.addEventListener("DOMContentLoaded", function() {
     dropdown2.style.display = "block";
   }
 });
+
+// CSS: Add the following CSS to disable clicking on the "MAGAZINE" element
+<style>
+  .disabled {
+    pointer-events: none;
+    color: grey;
+  }
+</style>
