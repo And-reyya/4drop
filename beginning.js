@@ -87,11 +87,3 @@ document.addEventListener("DOMContentLoaded", function() {
     dropdown2.style.display = "block";
   }
 });
-
-// CSS: Add the following CSS to disable clicking on the "MAGAZINE" element
-<style>
-  .disabled {
-    pointer-events: none;
-    color: grey;
-  }
-</style>
