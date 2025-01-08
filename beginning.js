@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
         triangleIcon = document.querySelector(".triangle-icon"),
         reversedrop = document.getElementById("reversedrop");
 
-  const options = ["WEAPON", "AMMO", "MAGAZINE", "SIGHT", "SCOPE", "SUPRESSOR", "BAYONETT", "RAIL", "FLASHLIGHT"];
+  const options = ["WEAPON", "AMMO", "MAGAZINE", "SIGHT", "SCOPE", "SUPPRESSOR", "BAYONETT", "RAIL", "FLASHLIGHT"];
   reversedrop.innerHTML = options.map(option => `<p>${option}</p>`).join("");
 
   triangleIcon.addEventListener("click", () => {
