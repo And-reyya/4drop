@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   reversedrop.querySelectorAll("p").forEach(option => {
     option.addEventListener("click", () => {
-      searchInput.value = option.textContent;
+      if (option.textContent !== "MAGAZINE") {
+        searchInput.value = option.textContent;
+      }
       reversedrop.style.display = "none";
       fetchDropdownData(option.textContent);
     });
