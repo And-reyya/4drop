@@ -4,30 +4,24 @@ document.addEventListener("DOMContentLoaded", function() {
         reversedrop = document.getElementById("reversedrop");
 
   const options = ["WEAPON", "AMMO", "MAGAZINE", "SIGHT", "SCOPE", "SUPPRESSOR", "BAYONETT", "RAIL", "FLASHLIGHT"];
-  reversedrop.innerHTML = options.map(option => {
-    if (option === "MAGAZINE") {
-      return `<p class="disabled">${option}</p>`;
-    }
-    return `<p>${option}</p>`;
-  }).join("");
+  reversedrop.innerHTML = options.map(option => `<p>${option}</p>`).join("");
 
   triangleIcon.addEventListener("click", () => {
     reversedrop.style.display = (reversedrop.style.display === "block") ? "none" : "block";
   });
 
-  reversedrop.querySelectorAll("p:not(.disabled)").forEach(option => {
+  reversedrop.querySelectorAll("p").forEach(option => {
     option.addEventListener("click", () => {
-      searchInput.value = option.textContent;
+      if (option.textContent !== "MAGAZINE") {
+        searchInput.value = option.textContent;
+        fetchDropdownData(option.textContent);
+      }
       reversedrop.style.display = "none";
-      fetchDropdownData(option.textContent);
     });
   });
 
   function fetchDropdownData(selectedOption) {
     let jsonUrl = "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json";
-    if (selectedOption === "MAGAZINE") {
-      jsonUrl = "https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json"; // Példa URL
-    }
     fetch(jsonUrl)
       .then(response => response.json())
       .then(data => createDropdown(data, selectedOption))
@@ -45,12 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     dropdown.innerHTML = '';
 
-    let items;
-    if (selectedOption === "MAGAZINE") {
-      items = Object.keys(data.reversemag);
-    } else {
-      items = data[selectedOption.toLowerCase()] || [];
-    }
+    let items = data[selectedOption.toLowerCase()] || [];
 
     items.forEach(item => {
       const option = document.createElement('p');
@@ -58,32 +47,9 @@ document.addEventListener("DOMContentLoaded", function() {
       option.addEventListener('click', () => {
         searchInput.value = `${searchInput.value}; ${item}`;
         dropdown.style.display = 'none';
-        if (selectedOption === "MAGAZINE") {
-          createDropdown2(data.reversemag[item].compatibleWeapons, item);
-        }
       });
       dropdown.appendChild(option);
     });
     dropdown.style.display = "block";
-  }
-
-  function createDropdown2(weapons, magazine) {
-    const dropdown2 = document.createElement('div');
-    dropdown2.id = 'reversemmagazine2';
-    dropdown2.classList.add('dropdown');
-    dropdown2.innerHTML = '';
-
-    weapons.forEach(weapon => {
-      const option = document.createElement('p');
-      option.textContent = weapon;
-      option.addEventListener('click', () => {
-        searchInput.value = `${searchInput.value}; ${weapon}`;
-        dropdown2.style.display = 'none';
-      });
-      dropdown2.appendChild(option);
-    });
-
-    document.querySelector('.search-container').appendChild(dropdown2);
-    dropdown2.style.display = "block";
   }
 });
