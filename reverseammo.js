@@ -1,8 +1,14 @@
 function showReversePont(e) {
     fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             const ammoData = data.reversepont;
+            if (!ammoData) throw new Error("reversepont is undefined");
             const reversePont = document.createElement("div");
             reversePont.id = "reversepont";
             reversePont.classList.add("dropdown");
@@ -20,7 +26,8 @@ function showReversePont(e) {
 
             document.querySelector(".search-container").appendChild(reversePont);
             reversePont.style.display = "block";
-        });
+        })
+        .catch(error => console.error("Error fetching reversepont data: ", error));
 }
 
 function showReverseMarika(e) {
@@ -49,9 +56,15 @@ function showReverseMarika(e) {
 
 function showReverseJancsi(e) {
     fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             const jancsiData = data.reversejancsi;
+            if (!jancsiData) throw new Error("reversejancsi is undefined");
             const reverseJancsi = document.createElement("div");
             reverseJancsi.id = "reversejancsi";
             reverseJancsi.classList.add("dropdown");
@@ -71,14 +84,21 @@ function showReverseJancsi(e) {
 
             document.querySelector(".search-container").appendChild(reverseJancsi);
             reverseJancsi.style.display = "block";
-        });
+        })
+        .catch(error => console.error("Error fetching reversejancsi data: ", error));
 }
 
 function showReverseMonika(e) {
     fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reversetools.json")
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             const monikaData = data.reversemonika;
+            if (!monikaData) throw new Error("reversemonika is undefined");
             const reverseMonika = document.createElement("div");
             reverseMonika.id = "reversemonika";
             reverseMonika.classList.add("dropdown");
@@ -98,5 +118,6 @@ function showReverseMonika(e) {
 
             document.querySelector(".search-container").appendChild(reverseMonika);
             reverseMonika.style.display = "block";
-        });
+        })
+        .catch(error => console.error("Error fetching reversemonika data: ", error));
 }
