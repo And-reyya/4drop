@@ -74,7 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let p = document.createElement("p");
             p.textContent = item;
             p.addEventListener("click", () => {
-                e.value += `; ${item}`;
+                // Itt helyezzük a módosítást, hogy ne kerüljenek a szavak a keresősávba
+                if (item !== "WEAPON" && item !== "MAGAZINE") {
+                    e.value += `; ${item}`;
+                }
                 reverseMarika.style.display = "none";
                 if (item === "WEAPON") {
                     showReverseJancsi();
