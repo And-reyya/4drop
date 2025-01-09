@@ -7,6 +7,7 @@ function showReversePont(e) {
             return response.json();
         })
         .then(data => {
+            console.log("reversepont data:", data);
             const ammoData = data.reversepont;
             if (!ammoData) throw new Error("reversepont is undefined");
             const reversePont = document.createElement("div");
@@ -63,6 +64,7 @@ function showReverseJancsi(e) {
             return response.json();
         })
         .then(data => {
+            console.log("reversejancsi data:", data);
             const jancsiData = data.reversejancsi;
             if (!jancsiData) throw new Error("reversejancsi is undefined");
             const reverseJancsi = document.createElement("div");
@@ -97,6 +99,7 @@ function showReverseMonika(e) {
             return response.json();
         })
         .then(data => {
+            console.log("reversemonika data:", data);
             const monikaData = data.reversemonika;
             if (!monikaData) throw new Error("reversemonika is undefined");
             const reverseMonika = document.createElement("div");
