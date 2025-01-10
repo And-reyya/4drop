@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let l = document.createElement("div");
         return l.id = "reverseSsight2", l.classList.add("dropdown"), l.innerHTML = "", Object.keys(t).filter(e => t[e].some(e => e.includes(n))).forEach(a => {
             let s = document.createElement("p"),
-                r = t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[1] || "").join(" ");
+                r = Array.from(new Set(t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[0] || ""))).join(" ");
             s.textContent = `${a} ${r}`, s.addEventListener("click", () => {
                 e.value = `${n}; ${a} ${r}`, l.style.display = "none", o = null
             }), l.appendChild(s)
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let l = document.createElement("div");
         return l.id = "reverseSscope2", l.classList.add("dropdown"), l.innerHTML = "", Object.keys(t).filter(e => t[e].some(e => e.includes(n))).forEach(a => {
             let s = document.createElement("p"),
-                r = t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[1] || "").join(" ");
+                r = Array.from(new Set(t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[0] || ""))).join(" ");
             s.textContent = `${a} ${r}`, s.addEventListener("click", () => {
                 e.value = `${n}; ${a} ${r}`, l.style.display = "none", o = null
             }), l.appendChild(s)
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let l = document.createElement("div");
         return l.id = "reverseHhang2", l.classList.add("dropdown"), l.innerHTML = "", Object.keys(t).filter(e => t[e].some(e => e.includes(n))).forEach(a => {
             let s = document.createElement("p"),
-                r = t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[1] || "").join(" ");
+                r = Array.from(new Set(t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[0] || ""))).join(" ");
             s.textContent = `${a} ${r}`, s.addEventListener("click", () => {
                 e.value = `${n}; ${a} ${r}`, l.style.display = "none", o = null
             }), l.appendChild(s)
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let l = document.createElement("div");
         return l.id = "reverseBbayonett2", l.classList.add("dropdown"), l.innerHTML = "", Object.keys(t).filter(e => t[e].some(e => e.includes(n))).forEach(a => {
             let s = document.createElement("p"),
-                r = t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[1] || "").join(" ");
+                r = Array.from(new Set(t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[0] || ""))).join(" ");
             s.textContent = `${a} ${r}`, s.addEventListener("click", () => {
                 e.value = `${n}; ${a} ${r}`, l.style.display = "none", o = null
             }), l.appendChild(s)
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let l = document.createElement("div");
         return l.id = "reverseRrail2", l.classList.add("dropdown"), l.innerHTML = "", Object.keys(t).filter(e => t[e].some(e => e.includes(n))).forEach(a => {
             let s = document.createElement("p"),
-                r = t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[1] || "").join(" ");
+                r = Array.from(new Set(t[a].filter(e => e.includes(n)).map(e => e.match(/\(([^)]+)\)/)?.[0] || ""))).join(" ");
             s.textContent = `${a} ${r}`, s.addEventListener("click", () => {
                 e.value = `${n}; ${a} ${r}`, l.style.display = "none", o = null
             }), l.appendChild(s)
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let C = await (await fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")).json();
                 l.innerHTML = "";
                 let L = new Set;
-                Object.values(C.reversesig).forEach(e => {
+                Object.values(C.reversesig                ).forEach(e => {
                     e.forEach(e => {
                         if ("none" !== e) {
                             let t = e.split(" (")[0];
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     let n = document.createElement("p");
                     n.textContent = t, n.addEventListener("click", () => {
                         e.value = t, a.style.display = "none", o = y(w.reversesco, t)
-                                        }), a.appendChild(n)
+                    }), a.appendChild(n)
                 }), t.style.display = "none", a.style.display = "block", o = a
             } else if ("SUPPRESSOR" === m.target.textContent) {
                 let g = await (await fetch("https://raw.githubusercontent.com/And-reyya/scumtools/main/reverse.json")).json();
